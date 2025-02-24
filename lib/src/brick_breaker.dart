@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -6,7 +7,7 @@ import 'package:flame/game.dart';
 import 'components/components.dart';
 import 'config.dart';
 
-class BrickBreaker extends FlameGame {
+class BrickBreaker extends FlameGame with HasCollisionDetection {
   BrickBreaker()
       : super(
           camera: CameraComponent.withFixedResolution(
@@ -18,6 +19,8 @@ class BrickBreaker extends FlameGame {
   double get width => size.x;
   double get height => size.y;
 
+  final random = math.Random();                                   // Add this variable
+
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
@@ -25,5 +28,14 @@ class BrickBreaker extends FlameGame {
     camera.viewfinder.anchor = Anchor.topLeft;
 
     world.add(PlayArea());
+
+    world.add(Ball(
+        radius: ballRadius,
+        position: size / 2,
+        velocity: Vector2((random.nextDouble() - 0.5) * width, height * 0.2)
+            .normalized()
+          ..scale(height / 4)));
+
+    debugMode = true;
   }
 }
