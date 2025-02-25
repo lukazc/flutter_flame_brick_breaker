@@ -24,6 +24,8 @@ class Bat extends PositionComponent
     ..color = const Color(0xff1e6091)
     ..style = PaintingStyle.fill;
 
+  bool _isRemoved = false;
+
   @override
   void render(Canvas canvas) {
     super.render(canvas);
@@ -37,11 +39,13 @@ class Bat extends PositionComponent
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
+    if (_isRemoved) return;
     super.onDragUpdate(event);
     position.x = (position.x + event.localDelta.x).clamp(0, game.width);
   }
 
   void moveBy(double dx) {
+    if (_isRemoved) return;
     add(MoveToEffect(
       Vector2((position.x + dx).clamp(0, game.width), position.y),
       EffectController(duration: 0.1),
