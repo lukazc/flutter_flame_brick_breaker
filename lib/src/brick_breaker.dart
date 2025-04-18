@@ -28,6 +28,8 @@ class BrickBreaker extends FlameGame
 
   final random = math.Random();
 
+  final ValueNotifier<int> score = ValueNotifier(0);
+
   late PlayState _playState;
   PlayState get playState => _playState;
   set playState(PlayState playState) {
@@ -63,6 +65,7 @@ class BrickBreaker extends FlameGame
     world.removeAll(world.children.query<Brick>());
 
     playState = PlayState.playing;
+    score.value = 0;
 
     world.add(Ball(
         difficultyModifier: difficultyModifier,
